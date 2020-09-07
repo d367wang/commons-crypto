@@ -39,6 +39,7 @@ import org.apache.commons.crypto.stream.input.ChannelInput;
 import org.apache.commons.crypto.stream.input.Input;
 import org.apache.commons.crypto.stream.input.StreamInput;
 import org.apache.commons.crypto.utils.Utils;
+import org.checkerframework.common.value.qual.IntRange;
 
 /**
  * CryptoInputStream reads input data and decrypts data in stream manner. It
@@ -215,7 +216,7 @@ public class CryptoInputStream extends InputStream implements
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public int read() throws IOException {
+    public @IntRange(from=-1, to=255) int read() throws IOException {
         int n;
         while ((n = read(oneByteBuf, 0, 1)) == 0) { //NOPMD
             /* no op */
@@ -237,7 +238,7 @@ public class CryptoInputStream extends InputStream implements
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
+    public @IntRange(from=-1, to=2147483647) int read(byte[] b, int off, int len) throws IOException {
         checkStream();
         if (b == null) {
             throw new NullPointerException();
@@ -505,7 +506,7 @@ public class CryptoInputStream extends InputStream implements
      *           return 0 (no data now, but could have more later)
      * @throws IOException if an I/O error occurs.
      */
-    protected int decryptMore() throws IOException {
+    protected @IntRange(from=-1, to=2147483647) int decryptMore() throws IOException {
         if (finalDone) {
             return -1;
         }

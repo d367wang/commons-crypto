@@ -37,6 +37,8 @@ import org.apache.commons.crypto.stream.input.ChannelInput;
 import org.apache.commons.crypto.stream.input.Input;
 import org.apache.commons.crypto.stream.input.StreamInput;
 import org.apache.commons.crypto.utils.Utils;
+import org.checkerframework.common.value.qual.IntRange;
+import cast.SignednessConvert;
 
 /**
  * <p>
@@ -395,7 +397,7 @@ public class CtrCryptoInputStream extends CryptoInputStream {
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    protected int decryptMore() throws IOException {
+    protected @IntRange(from=-1, to=2147483647) int decryptMore() throws IOException {
         int n = input.read(inBuffer);
         if (n <= 0) {
             return n;
@@ -659,7 +661,7 @@ public class CtrCryptoInputStream extends CryptoInputStream {
                 sum += (byte) counter & 0xff;
                 counter >>>= 8;
             }
-            IV[i] = (byte) sum;
+            IV[i] = SignednessConvert.unsignedToSignedByte((byte) sum);
         }
     }
 }

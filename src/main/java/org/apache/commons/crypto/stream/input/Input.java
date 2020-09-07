@@ -19,6 +19,7 @@ package org.apache.commons.crypto.stream.input;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.checkerframework.common.value.qual.IntRange;
 
 /**
  * The Input interface abstract the input source of
@@ -52,7 +53,7 @@ public interface Input {
      *         stream has been reached.
      * @throws IOException If some other I/O error occurs.
      */
-    int read(ByteBuffer dst) throws IOException;
+    @IntRange(from=-1, to=2147483647) int read(ByteBuffer dst) throws IOException;
 
     /**
      * Skips over and discards <code>n</code> bytes of data from this input The
@@ -112,7 +113,7 @@ public interface Input {
      *         stream has been reached.
      * @throws IOException if an I/O error occurs.
      */
-    int read(long position, byte[] buffer, int offset, int length)
+    @IntRange(from=-1, to=2147483647) int read(long position, byte[] buffer, int offset, int length)
             throws IOException;
 
     /**

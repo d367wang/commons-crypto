@@ -38,6 +38,8 @@ import org.apache.commons.crypto.stream.output.ChannelOutput;
 import org.apache.commons.crypto.stream.output.Output;
 import org.apache.commons.crypto.stream.output.StreamOutput;
 import org.apache.commons.crypto.utils.Utils;
+import org.checkerframework.common.value.qual.IntRange;
+import cast.SignednessConvert;
 
 /**
  * {@link CryptoOutputStream} encrypts data and writes to the under layer
@@ -47,7 +49,7 @@ import org.apache.commons.crypto.utils.Utils;
 
 public class CryptoOutputStream extends OutputStream implements
         WritableByteChannel {
-    private final byte[] oneByteBuf = new byte[1];
+    private final @IntRange(from=0, to=255) byte[] oneByteBuf = new byte[1];
 
     /** The output. */
     Output output; // package protected for access by crypto classes; do not expose futher

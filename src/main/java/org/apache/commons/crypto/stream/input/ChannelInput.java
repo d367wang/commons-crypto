@@ -20,6 +20,7 @@ package org.apache.commons.crypto.stream.input;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
+import org.checkerframework.common.value.qual.IntRange;
 
 /**
  * The ChannelInput class takes a <code>ReadableByteChannel</code> object and
@@ -54,7 +55,7 @@ public class ChannelInput implements Input {
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public int read(ByteBuffer dst) throws IOException {
+    public @IntRange(from=-1, to=2147483647) int read(ByteBuffer dst) throws IOException {
         return channel.read(dst);
     }
 
@@ -127,7 +128,7 @@ public class ChannelInput implements Input {
      * @throws IOException if an I/O error occurs.
      */
     @Override
-    public int read(long position, byte[] buffer, int offset, int length)
+    public @IntRange(from=-1, to=2147483647) int read(long position, byte[] buffer, int offset, int length)
             throws IOException {
         throw new UnsupportedOperationException(
                 "Positioned read is not supported by this implementation");
