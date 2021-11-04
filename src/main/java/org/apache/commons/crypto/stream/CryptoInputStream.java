@@ -236,38 +236,38 @@ public class CryptoInputStream extends InputStream implements
      *         buffer.
      * @throws IOException if an I/O error occurs.
      */
-    @Override
-    public int read(byte[] b, int off, int len) throws IOException {
-        checkStream();
-        if (b == null) {
-            throw new NullPointerException();
-        } else if (off < 0 || len < 0 || len > b.length - off) {
-            throw new IndexOutOfBoundsException();
-        } else if (len == 0) {
-            return 0;
-        }
-
-        int remaining = outBuffer.remaining();
-        if (remaining > 0) {
-            // Satisfy the read with the existing data
-            int n = Math.min(len, remaining);
-            outBuffer.get(b, off, n);
-            return n;
-        }
-        // No data in the out buffer, try read new data and decrypt it
-        // we loop for new data
-        int nd = 0;
-        while (nd == 0) {
-            nd = decryptMore();
-        }
-        if (nd < 0) {
-            return nd;
-        }
-
-        int n = Math.min(len, outBuffer.remaining());
-        outBuffer.get(b, off, n);
-        return n;
-    }
+//    @Override
+//    public int read(byte[] b, int off, int len) throws IOException {
+//        checkStream();
+//        if (b == null) {
+//            throw new NullPointerException();
+//        } else if (off < 0 || len < 0 || len > b.length - off) {
+//            throw new IndexOutOfBoundsException();
+//        } else if (len == 0) {
+//            return 0;
+//        }
+//
+//        int remaining = outBuffer.remaining();
+//        if (remaining > 0) {
+//            // Satisfy the read with the existing data
+//            int n = Math.min(len, remaining);
+//            outBuffer.get(b, off, n);
+//            return n;
+//        }
+//        // No data in the out buffer, try read new data and decrypt it
+//        // we loop for new data
+//        int nd = 0;
+//        while (nd == 0) {
+//            nd = decryptMore();
+//        }
+//        if (nd < 0) {
+//            return nd;
+//        }
+//
+//        int n = Math.min(len, outBuffer.remaining());
+//        outBuffer.get(b, off, n);
+//        return n;
+//    }
 
     /**
      * Overrides the {@link java.io.InputStream#skip(long)}. Skips over and
@@ -277,42 +277,42 @@ public class CryptoInputStream extends InputStream implements
      * @return the actual number of bytes skipped.
      * @throws IOException if an I/O error occurs.
      */
-    @Override
-    public long skip(long n) throws IOException {
-        Utils.checkArgument(n >= 0, "Negative skip length.");
-        checkStream();
-
-        if (n == 0) {
-            return 0;
-        }
-
-        long remaining = n;
-        int nd;
-
-        while (remaining > 0) {
-            if (remaining <= outBuffer.remaining()) {
-                // Skip in the remaining buffer
-                int pos = outBuffer.position() + (int) remaining;
-                outBuffer.position(pos);
-
-                remaining = 0;
-                break;
-            }
-            remaining -= outBuffer.remaining();
-            outBuffer.clear();
-
-            // we loop for new data
-            nd = 0;
-            while (nd == 0) {
-                nd = decryptMore();
-            }
-            if (nd < 0) {
-                break;
-            }
-        }
-
-        return n - remaining;
-    }
+//    @Override
+//    public long skip(long n) throws IOException {
+//        Utils.checkArgument(n >= 0, "Negative skip length.");
+//        checkStream();
+//
+//        if (n == 0) {
+//            return 0;
+//        }
+//
+//        long remaining = n;
+//        int nd;
+//
+//        while (remaining > 0) {
+//            if (remaining <= outBuffer.remaining()) {
+//                // Skip in the remaining buffer
+//                int pos = outBuffer.position() + (int) remaining;
+//                outBuffer.position(pos);
+//
+//                remaining = 0;
+//                break;
+//            }
+//            remaining -= outBuffer.remaining();
+//            outBuffer.clear();
+//
+//            // we loop for new data
+//            nd = 0;
+//            while (nd == 0) {
+//                nd = decryptMore();
+//            }
+//            if (nd < 0) {
+//                break;
+//            }
+//        }
+//
+//        return n - remaining;
+//    }
 
     /**
      * Overrides the {@link InputStream#available()}. Returns an estimate of the

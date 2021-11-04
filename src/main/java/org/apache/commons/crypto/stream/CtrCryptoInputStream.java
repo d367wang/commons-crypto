@@ -259,35 +259,35 @@ public class CtrCryptoInputStream extends CryptoInputStream {
      * @return the actual number of bytes skipped.
      * @throws IOException if an I/O error occurs.
      */
-    @Override
-    public long skip(long n) throws IOException {
-        Utils.checkArgument(n >= 0, "Negative skip length.");
-        checkStream();
-
-        if (n == 0) {
-            return 0;
-        } else if (n <= outBuffer.remaining()) {
-            int pos = outBuffer.position() + (int) n;
-            outBuffer.position(pos);
-            return n;
-        } else {
-            /*
-             * Subtract outBuffer.remaining() to see how many bytes we need to
-             * skip in the underlying stream. Add outBuffer.remaining() to the
-             * actual number of skipped bytes in the underlying stream to get
-             * the number of skipped bytes from the user's point of view.
-             */
-            n -= outBuffer.remaining();
-            long skipped = input.skip(n);
-            if (skipped < 0) {
-                skipped = 0;
-            }
-            long pos = streamOffset + skipped;
-            skipped += outBuffer.remaining();
-            resetStreamOffset(pos);
-            return skipped;
-        }
-    }
+//    @Override
+//    public long skip(long n) throws IOException {
+//        Utils.checkArgument(n >= 0, "Negative skip length.");
+//        checkStream();
+//
+//        if (n == 0) {
+//            return 0;
+//        } else if (n <= outBuffer.remaining()) {
+//            int pos = outBuffer.position() + (int) n;
+//            outBuffer.position(pos);
+//            return n;
+//        } else {
+//            /*
+//             * Subtract outBuffer.remaining() to see how many bytes we need to
+//             * skip in the underlying stream. Add outBuffer.remaining() to the
+//             * actual number of skipped bytes in the underlying stream to get
+//             * the number of skipped bytes from the user's point of view.
+//             */
+//            n -= outBuffer.remaining();
+//            long skipped = input.skip(n);
+//            if (skipped < 0) {
+//                skipped = 0;
+//            }
+//            long pos = streamOffset + skipped;
+//            skipped += outBuffer.remaining();
+//            resetStreamOffset(pos);
+//            return skipped;
+//        }
+//    }
 
     /**
      * Overrides the {@link CtrCryptoInputStream#read(ByteBuffer)}. Reads a
@@ -350,10 +350,10 @@ public class CtrCryptoInputStream extends CryptoInputStream {
          * and decrypted in outBuffer, we just need to re-position outBuffer.
          */
         if (position >= getStreamPosition() && position <= getStreamOffset()) {
-            int forward = (int) (position - getStreamPosition());
+            /*int forward = (int) (position - getStreamPosition());
             if (forward > 0) {
                 outBuffer.position(outBuffer.position() + forward);
-            }
+            }*/
         } else {
             input.seek(position);
             resetStreamOffset(position);
@@ -545,7 +545,8 @@ public class CtrCryptoInputStream extends CryptoInputStream {
      * @return the padding for input stream position.
      */
     protected byte getPadding(long position) {
-        return (byte) (position % cipher.getBlockSize());
+//        return (byte) (position % cipher.getBlockSize());
+        return (byte) (position % 127);
     }
 
     /**
@@ -655,11 +656,11 @@ public class CtrCryptoInputStream extends CryptoInputStream {
         while (i-- > 0) {
             // (sum >>> Byte.SIZE) is the carry for addition
             sum = (initIV[i] & 0xff) + (sum >>> Byte.SIZE); // NOPMD
-            if (j++ < 8) { // Big-endian, and long is 8 bytes length
-                sum += (byte) counter & 0xff;
+//            if (j++ < 8) { // Big-endian, and long is 8 bytes length
+//                sum += (byte) counter & 0xff;
                 counter >>>= 8;
-            }
-            IV[i] = (byte) sum;
+//            }
+//            IV[i] = (byte) sum;
         }
     }
 }

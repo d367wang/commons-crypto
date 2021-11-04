@@ -322,7 +322,7 @@ public class CtrCryptoOutputStream extends CryptoOutputStream {
     private void resetCipher() throws IOException {
         final long counter = streamOffset
                 / cipher.getBlockSize();
-        padding = (byte) (streamOffset % cipher.getBlockSize());
+//        padding = (byte) (streamOffset % cipher.getBlockSize());
         inBuffer.position(padding); // Set proper position for input data.
 
         CtrCryptoInputStream.calculateIV(initIV, counter, iv);
