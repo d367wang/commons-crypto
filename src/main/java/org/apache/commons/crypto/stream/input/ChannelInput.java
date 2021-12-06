@@ -76,11 +76,11 @@ public class ChannelInput implements Input {
             return 0;
         }
 
-        int size = (int) Math.min(SKIP_BUFFER_SIZE, remaining);
+//        int size = (int) Math.min(SKIP_BUFFER_SIZE, remaining);
         ByteBuffer skipBuffer = getSkipBuf();
         while (remaining > 0) {
             skipBuffer.clear();
-            skipBuffer.limit((int) Math.min(size, remaining));
+//            skipBuffer.limit((int) Math.min(size, remaining));
             nr = read(skipBuffer);
             if (nr < 0) {
                 break;

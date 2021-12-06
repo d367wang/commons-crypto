@@ -199,7 +199,7 @@ public class CryptoOutputStream extends OutputStream implements
      */
     @Override
     public void write(int b) throws IOException {
-//        oneByteBuf[0] = (byte) (b & 0xff);
+        oneByteBuf[0] = (byte) (b & 0xff);
         write(oneByteBuf, 0, oneByteBuf.length);
     }
 

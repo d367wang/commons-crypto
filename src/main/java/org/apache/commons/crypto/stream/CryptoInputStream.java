@@ -290,9 +290,9 @@ public class CryptoInputStream extends InputStream implements
         int nd;
 
         while (remaining > 0) {
-            if (remaining <= outBuffer.remaining()) {
+            if (remaining <= outBuffer.remaining()) {   // need refinement here
                 // Skip in the remaining buffer
-//                int pos = outBuffer.position() + (int) remaining;
+//                int pos = outBuffer.position() + (int) remaining; // FP: 0 < remain < Integer.MAX_VAL
 //                outBuffer.position(pos);
 
                 remaining = 0;
